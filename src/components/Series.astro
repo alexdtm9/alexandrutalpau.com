@@ -1,0 +1,52 @@
+---
+import { getCollection } from "astro:content";
+import { getPath } from "@/utils/getPath";
+import getPostsInSeries from "@/utils/getPostsInSeries";
+
+interface Props {
+    // The series object from the current post's frontmatter
+    series: { title: string; part: number } | undefined;
+}
+
+const { series } = Astro.props;
+
+if (!series) {
+    return null;
+}
+
+const allPosts = await getCollection("blog", ({ data }) => !data.draft);
+
+// Find and sort all posts belonging to the current series
+const seriesPosts = getPostsInSeries(allPosts, series.title);
+---
+
+<aside
+        class="my-8 border border-gray-200/75 dark:border-gray-700/75 rounded-lg p-6"
+>
+    <h3 class="mb-4 text-lg font-semibold">
+        Part of the series: <span class="italic">{series.title}</span>
+    </h3>
+    <ol class="list-decimal list-inside">
+        {
+            seriesPosts.map(post => {
+                const isCurrentPost = post.data.series?.part === series.part;
+                return (
+                        <li class="mb-2">
+                            {isCurrentPost ? (
+                                    <span class="font-semibold text-gray-800 dark:text-gray-200">
+                {post.data.title}
+              </span>
+                            ) : (
+                                    <a
+                                            href={getPath(post.id, post.filePath)}
+                                            class="text-accent decoration-dashed underline-offset-4 hover:underline"
+                                    >
+                                        {post.data.title}
+                                    </a>
+                            )}
+                        </li>
+                );
+            })
+        }
+    </ol>
+</aside>
