@@ -12,7 +12,7 @@ export default {
   post: {
     publishedAt: "Published at",
     updatedAt: "Updated",
-    sharePostIntro: "Share this post:",
+    sharePostIntro: "Share this post",
     sharePostOn: "Share this post on {{platform}}",
     sharePostViaEmail: "Share this post via email",
     tagLabel: "Tags",
@@ -28,10 +28,9 @@ export default {
     page: "Page",
   },
   home: {
-    socialLinks: "Social Links",
+    writing: "Writing",
     featured: "Featured",
-    recentPosts: "Recent Posts",
-    allPosts: "All Posts",
+    allPosts: "All posts",
   },
   footer: {
     copyright: "Copyright",

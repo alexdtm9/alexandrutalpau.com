@@ -26,9 +26,8 @@ export interface UIStrings {
     page: string;
   };
   home: {
-    socialLinks: string;
+    writing: string;
     featured: string;
-    recentPosts: string;
     allPosts: string;
   };
   footer: {

@@ -3,6 +3,7 @@ import type { CollectionEntry } from "astro:content";
 import { getPostUrl } from "@/utils/getPostPaths";
 import { toTransitionName } from "@/utils/toTransitionName";
 import Datetime from "./Datetime.astro";
+import { useTranslations } from "@/i18n";
 
 type Props = {
   variant?: "h2" | "h3";
@@ -10,22 +11,35 @@ type Props = {
 
 const { variant: Heading = "h2", id, data, filePath } = Astro.props;
 
-const { title, description, ...props } = data;
+const t = useTranslations(Astro.currentLocale);
+
+const { title, description, featured, ...props } = data;
 ---
 
-<li class="my-6">
+<li class="border-border border-t first:border-t-0">
   <a
     href={getPostUrl(id, filePath, Astro.currentLocale)}
-    class:list={[
-      "text-accent inline-block text-lg font-medium",
-      "decoration-dashed underline-offset-4 hover:underline",
-      "focus-visible:no-underline focus-visible:underline-offset-0",
-    ]}
+    class="group grid gap-y-1.5 py-6 sm:grid-cols-[7rem_1fr] sm:gap-x-6"
   >
-    <Heading transition:name={toTransitionName(title)}>
-      {title}
-    </Heading>
+    {/* Mono gutter — metadata sits beside the writing rather than under it. */}
+    <div
+      class="flex flex-wrap items-baseline gap-x-2.5 gap-y-1 sm:flex-col sm:items-start"
+    >
+      <Datetime {...props} compact />
+      {
+        featured && (
+          <span class="mono-label text-accent">{t.home.featured}</span>
+        )
+      }
+    </div>
+    <div>
+      <Heading
+        transition:name={toTransitionName(title)}
+        class="type-post-title group-hover:text-accent transition-colors"
+      >
+        {title}
+      </Heading>
+      <p class="text-muted-foreground mt-1.5">{description}</p>
+    </div>
   </a>
-  <Datetime {...props} />
-  <p>{description}</p>
 </li>

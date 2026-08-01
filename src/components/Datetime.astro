@@ -12,6 +12,14 @@ dayjs.extend(timezone);
 type Props = {
   class?: string;
   size?: "sm" | "lg";
+  /** Drop the calendar icon where surrounding structure already says "date". */
+  hideIcon?: boolean;
+  /**
+   * Listing variant: fixed-width ISO date so dates line up in the card gutter,
+   * with "Updated" demoted to a marker beneath rather than an inline prefix
+   * that would overflow the column.
+   */
+  compact?: boolean;
   pubDatetime: string | Date;
   timezone?: string;
   modDatetime?: string | Date | null;
@@ -21,6 +29,8 @@ const {
   pubDatetime,
   modDatetime,
   size = "sm",
+  hideIcon = false,
+  compact = false,
   class: className = "",
   timezone: postTimezone,
 } = Astro.props;
@@ -33,29 +43,57 @@ const datetime = dayjs(isModified ? modDatetime : pubDatetime).tz(
   postTimezone ?? config.site.timezone
 );
 
-const date = datetime.format("D MMM, YYYY");
+const date = datetime.format(compact ? "YYYY-MM-DD" : "D MMM, YYYY");
 ---
 
-<div
-  class:list={["text-muted-foreground flex items-center gap-x-2", className]}
->
-  <IconCalendar
-    class:list={[
-      "inline-block size-6 min-w-5.5",
-      { "scale-90": size === "sm" },
-    ]}
-  />
-  {
-    isModified && (
-      <span class:list={["text-sm", { "sm:text-base": size === "lg" }]}>
-        {t.post.updatedAt}:
-      </span>
-    )
-  }
-  <time
-    class:list={["text-sm", { "sm:text-base": size === "lg" }]}
-    datetime={datetime.toISOString()}
-  >
-    {date}
-  </time>
-</div>
+{
+  compact ? (
+    <div
+      class:list={[
+        "text-muted-foreground font-app flex flex-wrap items-baseline gap-x-2.5 gap-y-1 tabular-nums sm:flex-col sm:items-start",
+        className,
+      ]}
+    >
+      <time
+        class="text-xs"
+        datetime={datetime.toISOString()}
+        title={isModified ? t.post.updatedAt : undefined}
+      >
+        {date}
+        {isModified && (
+          <>
+            <span aria-hidden="true">*</span>
+            <span class="sr-only">({t.post.updatedAt})</span>
+          </>
+        )}
+      </time>
+    </div>
+  ) : (
+    <div
+      class:list={[
+        "text-muted-foreground font-app flex items-center gap-x-2 tabular-nums",
+        className,
+      ]}
+    >
+      {!hideIcon && (
+        <IconCalendar
+          class:list={[
+            "inline-block size-6 min-w-5.5",
+            { "scale-90": size === "sm" },
+          ]}
+        />
+      )}
+      {isModified && (
+        <span class:list={["text-sm", { "sm:text-base": size === "lg" }]}>
+          {t.post.updatedAt}:
+        </span>
+      )}
+      <time
+        class:list={["text-sm", { "sm:text-base": size === "lg" }]}
+        datetime={datetime.toISOString()}
+      >
+        {date}
+      </time>
+    </div>
+  )
+}

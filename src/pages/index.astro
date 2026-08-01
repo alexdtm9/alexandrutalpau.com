@@ -20,9 +20,17 @@ const t = useTranslations(locale);
 
 const posts = await getCollection("posts");
 const sortedPosts = getSortedPosts(posts);
-const featuredPosts = sortedPosts.filter(({ data }) => data.featured);
-const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
+
+// One list rather than a Featured/Recent split: featured posts sort to the
+// top and carry a marker, so the homepage reads as a single index.
+const homePosts = [
+  ...sortedPosts.filter(({ data }) => data.featured),
+  ...sortedPosts.filter(({ data }) => !data.featured),
+].slice(0, postsConfig.perIndex);
+
+const hasMorePosts = sortedPosts.length > homePosts.length;
 const homePath = getRelativeLocaleUrl(locale, "");
+const rssPath = `${import.meta.env.BASE_URL.replace(/\/?$/, "/")}rss.xml`;
 ---
 
 <Layout>
@@ -33,82 +41,61 @@ const homePath = getRelativeLocaleUrl(locale, "");
     data-home-path={homePath}
     class="app-layout"
   >
-    <section id="hero" class="border-border border-b pt-8 pb-6">
-      <h1 class="my-4 inline-block text-4xl font-bold sm:my-8 sm:text-5xl">
-        Alexandru Talpau
-      </h1>
-      <a
-        target="_blank"
-        href={`${import.meta.env.BASE_URL.replace(/\/?$/, "/")}rss.xml`}
-        class="inline-block"
-        aria-label="RSS Feed"
-        title="RSS Feed"
+    <section id="hero" class="border-border border-b pt-12 pb-10 sm:pt-16">
+      <h1
+        class="font-text text-3xl leading-[1.15] font-semibold tracking-[-0.02em] text-balance sm:text-4xl"
       >
-        <IconRss
-          width={20}
-          height={20}
-          class="stroke-accent scale-125 stroke-3 rtl:-rotate-90"
-        />
-        <span class="sr-only">RSS Feed</span>
-      </a>
+        Hi, I&apos;m Alexandru <span class="align-baseline">👋</span>
+      </h1>
+      <div class="mt-6 max-w-[64ch] space-y-4 text-pretty">
+        <p>
+          I&apos;m a software engineer who enjoys building things, breaking
+          them, and occasionally writing about what I learned in the process.
+          This blog is where I share short, focused posts on software
+          development — from small “How To” guides to lessons learned the hard
+          way.
+        </p>
+      </div>
+      <div class="mt-8 flex items-center gap-x-3">
+        {socials.length > 0 && <Socials />}
+        {
+          socials.length > 0 && (
+            <span aria-hidden="true" class="bg-border h-4 w-px" />
+          )
+        }
+        <a
+          target="_blank"
+          href={rssPath}
+          class="mono-meta text-muted-foreground hover:text-accent flex items-center gap-x-1.5"
+        >
+          <IconRss class="size-4 rtl:-rotate-90" aria-hidden="true" />
+          RSS
+        </a>
+      </div>
+    </section>
 
-      <p>
-        Notes on software development, tooling, and the things I'm building.
-      </p>
+    <section id="writing" class="pt-10 pb-6">
+      <h2 class="mono-label text-muted-foreground">{t.home.writing}</h2>
+      <ul class="mt-5">
+        {homePosts.map(data => <Card variant="h3" {...data} />)}
+      </ul>
       {
-        socials.length > 0 && (
-          <div class="mt-4 flex max-sm:flex-col sm:items-center">
-            <div class="me-2 mb-1 whitespace-nowrap sm:mb-0">
-              {t.home.socialLinks}:
-            </div>
-            <Socials />
+        hasMorePosts && (
+          <div class="border-border border-t pt-6">
+            <LinkButton
+              href={getRelativeLocaleUrl(locale, "posts")}
+              class="mono-meta gap-x-1.5"
+            >
+              {t.home.allPosts}
+              <IconArrowRight
+                class="size-4 rtl:-rotate-180"
+                aria-hidden="true"
+              />
+            </LinkButton>
           </div>
         )
       }
     </section>
-
-    {
-      featuredPosts.length > 0 && (
-        <section
-          id="featured"
-          class:list={[
-            "pt-12 pb-6",
-            { "border-border border-b": recentPosts.length > 0 },
-          ]}
-        >
-          <h2 class="text-2xl font-semibold tracking-wide">
-            {t.home.featured}
-          </h2>
-          <ul>
-            {featuredPosts.map(data => (
-              <Card variant="h3" {...data} />
-            ))}
-          </ul>
-        </section>
-      )
-    }
-
-    {
-      recentPosts.length > 0 && (
-        <section id="recent-posts" class="pt-12 pb-6">
-          <h2 class="text-2xl font-semibold tracking-wide">
-            {t.home.recentPosts}
-          </h2>
-          <ul>
-            {recentPosts.slice(0, postsConfig.perIndex).map(data => (
-              <Card variant="h3" {...data} />
-            ))}
-          </ul>
-        </section>
-      )
-    }
-
-    <div class="my-8 text-center">
-      <LinkButton href={getRelativeLocaleUrl(locale, "posts")}>
-        {t.home.allPosts}
-        <IconArrowRight class="inline-block rtl:-rotate-180" />
-      </LinkButton>
-    </div>
   </main>
   <Footer />
 </Layout>
