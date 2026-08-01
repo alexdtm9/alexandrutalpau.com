@@ -21,8 +21,12 @@ const backUrl = config.features.showBackButton
   id="main-content"
   class:list={["app-layout pb-4", className]}
 >
-  <h1 class="text-2xl font-semibold sm:text-3xl">{pageTitle}</h1>
-  <p class="mt-2 mb-6 italic">{pageDesc}</p>
+  {
+    /* Pages without a description (About) carry the spacing on the heading,
+      so we never emit an empty <p> just to hold margin. */
+  }
+  <h1 class:list={["type-title", pageDesc ? "mb-2" : "mb-6"]}>{pageTitle}</h1>
+  {pageDesc && <p class="text-muted-foreground mb-6">{pageDesc}</p>}
   <slot />
 </main>
 

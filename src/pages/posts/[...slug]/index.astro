@@ -113,7 +113,7 @@ const ogImage = ogImageUrl
   >
     <h1
       style={{ viewTransitionName: toTransitionName(title) }}
-      class="text-accent inline-block text-2xl font-bold sm:text-3xl"
+      class="type-title inline-block text-2xl font-semibold sm:text-3xl"
     >
       {title}
     </h1>
@@ -143,7 +143,7 @@ const ogImage = ogImageUrl
       <Content />
     </article>
 
-    <hr class="my-8 border-dashed" />
+    <hr class="border-border my-8" />
 
     <EditPost class="sm:hidden" {hideEditPost} {post} />
 
@@ -155,7 +155,7 @@ const ogImage = ogImageUrl
 
     <ShareLinks />
 
-    <hr class="my-8 border-dashed" />
+    <hr class="border-border my-8" />
 
     <AdjacentPostNav {prevPost} {nextPost} />
   </main>
