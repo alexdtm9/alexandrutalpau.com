@@ -32,9 +32,8 @@ export default defineSiteConfig({
   },
   socials: [
     { name: "github", url: "https://github.com/alexdtm9" },
-    { name: "x", url: "https://x.com/alexdtm9" },
     { name: "linkedin", url: "https://www.linkedin.com/in/alexandru-mt" },
-    { name: "mail", url: "mailto:info@alexposta.com" },
+    { name: "mail", url: "mailto:info@alexandrutalpau.com" },
   ],
   shareLinks: [
     { name: "whatsapp", url: "https://wa.me/?text=" },
