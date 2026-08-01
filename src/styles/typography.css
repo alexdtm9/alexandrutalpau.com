@@ -10,11 +10,15 @@
     h3,
     h4,
     th {
-      @apply text-foreground mb-3;
+      @apply text-foreground font-text mb-3 tracking-[-0.011em];
+    }
+
+    h2 {
+      @apply mt-10;
     }
 
     h3 {
-      @apply italic;
+      @apply mt-8 font-medium;
     }
 
     p,
@@ -28,7 +32,7 @@
     }
 
     a {
-      @apply text-foreground hover:text-accent wrap-break-word decoration-dashed underline-offset-4 focus-visible:no-underline;
+      @apply text-foreground hover:text-accent hover:decoration-accent decoration-border wrap-break-word decoration-1 underline-offset-4 focus-visible:no-underline;
     }
 
     ul {
@@ -70,8 +74,15 @@
       }
     }
 
+    code,
+    kbd,
+    pre,
+    samp {
+      @apply font-app;
+    }
+
     code {
-      @apply bg-muted/75 text-foreground rounded p-1 wrap-break-word before:content-none after:content-none;
+      @apply bg-muted text-foreground rounded-sm px-1 py-0.5 text-[0.9em] wrap-break-word before:content-none after:content-none;
     }
 
     .astro-code code {

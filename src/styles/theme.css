@@ -7,28 +7,31 @@
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
   --color-border: var(--border);
+
+  /* Two type roles: mono is machinery, text is writing. */
   --font-app: var(--font-google-sans-code);
+  --font-text: var(--font-instrument-sans);
 }
 
 /* Light theme values */
 :root,
 [data-theme="light"] {
-  --background: #fdfdfd;
-  --foreground: #282728;
-  --accent: #006cac;
+  --background: #fbfaf8;
+  --foreground: #1c1b18;
+  --accent: #a35a00;
   --accent-foreground: #ffffff;
-  --muted: #e6e6e6;
-  --muted-foreground: #6b7280;
-  --border: #ece9e9;
+  --muted: #efede7;
+  --muted-foreground: #6c6a62;
+  --border: #e3e0d8;
 }
 
-/* Dark theme values */
+/* Dark theme values. Same accent hue, lifted; neutral borders. */
 [data-theme="dark"] {
-  --background: #212737;
-  --foreground: #eaedf3;
-  --accent: #ff6b01;
-  --accent-foreground: #ffffff;
-  --muted: #343f60;
-  --muted-foreground: #afb9ca;
-  --border: #ab4b08;
+  --background: #17171a;
+  --foreground: #e8e6e1;
+  --accent: #e3a63a;
+  --accent-foreground: #17171a;
+  --muted: #232326;
+  --muted-foreground: #9a978f;
+  --border: #2e2e32;
 }

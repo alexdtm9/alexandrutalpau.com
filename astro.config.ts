@@ -66,6 +66,17 @@ export default defineConfig({
       fallbacks: ["monospace"],
       weights: [300, 400, 500, 600, 700],
       styles: ["normal", "italic"],
+      // `ttf` and weights 400/700 are required by the satori OG image
+      // generators (see src/utils/getFontPathByWeight.ts). Do not remove.
+      formats: ["woff", "ttf"],
+    },
+    {
+      name: "Instrument Sans",
+      cssVariable: "--font-instrument-sans",
+      provider: fontProviders.google(),
+      fallbacks: ["ui-sans-serif", "system-ui", "sans-serif"],
+      weights: [400, 500, 600, 700],
+      styles: ["normal", "italic"],
       formats: ["woff", "ttf"],
     },
   ],
