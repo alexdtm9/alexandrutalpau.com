@@ -22,7 +22,9 @@ export default defineSiteConfig({
     // at build time by src/pages/og.png.ts. Don't set this to false unless you
     // also add public/<site.ogImage> — the build throws otherwise.
     dynamicOgImage: true,
-    showArchives: true,
+    // Duplicates /posts until there are enough posts for a year view to aid
+    // navigation. Pagefind search covers "find that old post" better meanwhile.
+    showArchives: false,
     showBackButton: true,
     // Re-enable with the repo's edit URL once the blog has a git remote.
     editPost: { enabled: false },
